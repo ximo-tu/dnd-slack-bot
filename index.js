@@ -51,6 +51,9 @@ const handleD20Command = async ({ command, ack, respond}) => {
   })
 }
 
+app.command("/d20", handleD20Command);
+app.command("/dnd-d20", handleD20Command);
+
 (async () => {
   await app.start();
   console.log("DnD bot is running!");
