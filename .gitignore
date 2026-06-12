@@ -1,0 +1,7 @@
+# I mean unless we want to commit the most massive object in the univserse to git....
+node_modules
+
+# If i dont put this github wont even let me push this
+# I mean sure also security issues
+
+.env
