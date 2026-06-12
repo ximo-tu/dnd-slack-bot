@@ -37,13 +37,21 @@ const handleD20Command = async ({ command, ack, respond}) => {
   await ack();
   const roll = rollD20();
   
+  let modifierText = "";
+
+  if (roll === 20) {
+    modifierText = " ✨ *CRITICAL HIT* ✨";
+  } else if (roll === 1) {
+    modifierText = " 💀 *CRITICAL FAILURE!* 💀";
+  }
+
   await respond({
-    text: `<@${command.user_id}> rolled a *d20* and got: 🎲 *${roll}*`,
+    text: `<@${command.user_id}> rolled a *d20* and got: 🎲 *${roll}*${modifierText}`,
     response_type: "in_channel"
   })
 }
 
 (async () => {
   await app.start();
-  console.log("bot is running!");
+  console.log("DnD bot is running!");
 })();
