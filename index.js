@@ -11,7 +11,7 @@ const app = new App({
 app.command("/dnd-help", async ({ ack, respond}) => {
   await ack();
   await respond({
-    text: "DnD Bot Help Menu\nHere is what I can do:\n/dnd-ping / /dnd-pong - Check latency\n /d20 or /dnd-d20 - Roll a 20-sided die! "
+    text: "🎲 *DnD Bot Help Menu* 🎲\nHere is what I can do:\n• `/dnd-ping` / `/dnd-pong` - Check latency\n• `/d20` or `/dnd-d20` - Roll a 20-sided die!"
   });
 });
 
