@@ -8,6 +8,13 @@ const app = new App({
   socketMode: true
 });
 
+app.command("/dnd-help", async ({ ack, respond}) => {
+  await ack();
+  await respond({
+    text: "DnD Bot Help Menu\nHere is what I can do:\n/dnd-ping / /dnd-pong - Check latency\n /d20 or /dnd-d20 - Roll a 20-sided die! "
+  });
+});
+
 app.command("/dnd-ping", async ({ command, ack, respond }) => {
   const start = Date.now();
   await ack();
