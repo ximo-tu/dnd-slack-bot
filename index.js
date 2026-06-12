@@ -29,6 +29,20 @@ app.command("/dnd-pong", async ({ command, ack, respond }) => {
   await respond({ text: `Ping!\nI'm the DnD bot!\nLatency: ${latency}ms` });
 });
 
+const rollD20 = () => {
+  return Math.floor(Math.random() * 20) + 1;
+}
+
+const handleD20Command = async ({ command, ack, respond}) => {
+  await ack();
+  const roll = rollD20();
+  
+  await respond({
+    text: `<@${command.user_id}> rolled a *d20* and got: 🎲 *${roll}*`,
+    response_type: "in_channel"
+  })
+}
+
 (async () => {
   await app.start();
   console.log("bot is running!");
