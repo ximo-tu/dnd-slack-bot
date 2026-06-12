@@ -8,11 +8,18 @@ const app = new App({
   socketMode: true
 });
 
-app.command("/azo-ping", async ({ command, ack, respond }) => {
+app.command("/dnd-ping", async ({ command, ack, respond }) => {
   const start = Date.now();
   await ack();
   const latency = Date.now() - start;
-  await respond({ text: `Pong!\nLatency: ${latency}ms` });
+  await respond({ text: `Pong!\nI'm the DnD bot!\nLatency: ${latency}ms` });
+});
+
+app.command("/dnd-pong", async ({ command, ack, respond }) => {
+  const start = Date.now();
+  await ack();
+  const latency = Date.now() - start;
+  await respond({ text: `Ping!\nI'm the DnD bot!\nLatency: ${latency}ms` });
 });
 
 (async () => {
