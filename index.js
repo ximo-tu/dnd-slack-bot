@@ -21,7 +21,7 @@ app.command("/dnd-help", async ({ ack, respond }) => {
           "Here is what I can do:\n" +
           "• `/dnd-ping` / `/dnd-pong` - Check latency\n" +
           "• `/d4` or `/dnd-d4` - Roll a d4\n" +
-          "• `/dnd-d6` - Roll a d6 (`/d6` is unavailable)\n" +
+          "• `/dnd-d6` - Roll a d6\n" +
           "• `/d8` or `/dnd-d8` - Roll a d8\n" +
           "• `/d10` or `/dnd-d10` - Roll a d10\n" +
           "• `/d12` or `/dnd-d12` - Roll a d12\n" +
