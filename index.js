@@ -8,51 +8,94 @@ const app = new App({
   socketMode: true
 });
 
-app.command("/dnd-help", async ({ ack, respond}) => {
+// Helper function to roll any size die
+const rollDie = (sides) => {
+  return Math.floor(Math.random() * sides) + 1;
+};
+
+// Help Menu updated with the new dice
+app.command("/dnd-help", async ({ ack, respond }) => {
   await ack();
   await respond({
-    text: "🎲 *DnD Bot Help Menu* 🎲\nHere is what I can do:\n• `/dnd-ping` / `/dnd-pong` - Check latency\n• `/d20` or `/dnd-d20` - Roll a 20-sided die!"
+    text: "🎲 *DnD Bot Help Menu* 🎲\n" +
+          "Here is what I can do:\n" +
+          "• `/dnd-ping` / `/dnd-pong` - Check latency\n" +
+          "• `/d4` or `/dnd-d4` - Roll a d4\n" +
+          "• `/dnd-d6` - Roll a d6 (`/d6` is unavailable)\n" +
+          "• `/d8` or `/dnd-d8` - Roll a d8\n" +
+          "• `/d10` or `/dnd-d10` - Roll a d10\n" +
+          "• `/d12` or `/dnd-d12` - Roll a d12\n" +
+          "• `/d20` or `/dnd-d20` - Roll a d20 (With Crit detection!)\n" +
+          "• `/d100` or `/dnd-d100` - Roll a d100"
   });
 });
 
-app.command("/dnd-ping", async ({ command, ack, respond }) => {
+// Latency checks
+app.command("/dnd-ping", async ({ ack, respond }) => {
   const start = Date.now();
   await ack();
   const latency = Date.now() - start;
   await respond({ text: `Pong!\nI'm the DnD bot!\nLatency: ${latency}ms` });
 });
 
-app.command("/dnd-pong", async ({ command, ack, respond }) => {
+app.command("/dnd-pong", async ({ ack, respond }) => {
   const start = Date.now();
   await ack();
   const latency = Date.now() - start;
   await respond({ text: `Ping!\nI'm the DnD bot!\nLatency: ${latency}ms` });
 });
 
-const rollD20 = () => {
-  return Math.floor(Math.random() * 20) + 1;
-}
-
-const handleD20Command = async ({ command, ack, respond}) => {
+// Generic dice roller handler
+const handleDiceRoll = async ({ command, ack, respond }) => {
   await ack();
-  const roll = rollD20();
   
+  // Extract the numbers from the command (e.g., "/dnd-d100" or "/d4" -> 100 or 4)
+  const match = command.command.match(/d(\d+)/);
+  if (!match) {
+    await respond({ text: "Error determining dice type." });
+    return;
+  }
+  
+  const sides = parseInt(match[1], 10);
+  const roll = rollDie(sides);
   let modifierText = "";
 
-  if (roll === 20) {
-    modifierText = " ✨ *CRITICAL HIT* ✨";
-  } else if (roll === 1) {
-    modifierText = " 💀 *CRITICAL FAILURE!* 💀";
+  // Keep the special critical formatting unique to the d20
+  if (sides === 20) {
+    if (roll === 20) {
+      modifierText = " ✨ *CRITICAL HIT* ✨";
+    } else if (roll === 1) {
+      modifierText = " 💀 *CRITICAL FAILURE!* 💀";
+    }
   }
 
   await respond({
-    text: `<@${command.user_id}> rolled a *d20* and got: 🎲 *${roll}*${modifierText}`,
+    text: `<@${command.user_id}> rolled a *d${sides}* and got: 🎲 *${roll}*${modifierText}`,
     response_type: "in_channel"
-  })
-}
+  });
+};
 
-app.command("/d20", handleD20Command);
-app.command("/dnd-d20", handleD20Command);
+// Registering standard and prefixed commands
+app.command("/d4", handleDiceRoll);
+app.command("/dnd-d4", handleDiceRoll);
+
+// /d6 is omitted, but /dnd-d6 is available
+app.command("/dnd-d6", handleDiceRoll);
+
+app.command("/d8", handleDiceRoll);
+app.command("/dnd-d8", handleDiceRoll);
+
+app.command("/d10", handleDiceRoll);
+app.command("/dnd-d10", handleDiceRoll);
+
+app.command("/d12", handleDiceRoll);
+app.command("/dnd-d12", handleDiceRoll);
+
+app.command("/d20", handleDiceRoll);
+app.command("/dnd-d20", handleDiceRoll);
+
+app.command("/d100", handleDiceRoll);
+app.command("/dnd-d100", handleDiceRoll);
 
 (async () => {
   await app.start();
